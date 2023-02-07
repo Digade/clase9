@@ -26,9 +26,24 @@ app.use('/static', express.static(__dirname + '/public'))
 app.use('/api/product', routerProd)
 
 app.get('/static', (req,res) => {
+
+    const user = {
+        nombre: "seba",
+        email: "seba@eeee.com",
+        rol: "tutor"
+    }
+
+    const cursos = [
+        {numComision: 44555, dias: "Lunes y Miercoles", horario: '20 a 21hrs'},
+        {numComision: 43555, dias: "Martes y jueves", horario: '19 a 22hrs'}
+    ]
+
     res.render("home", {
         titulo: "Coder",
-        mensaje: "Mundo"
+        mensaje: "Mundo",
+        isTutor: user.rol === "tutor", //me tira un booleano true o false
+        user: user,
+        cursos
     }) //render renderiza html
 })
 
