@@ -7,11 +7,23 @@ import __dirname from './path.js'
 import multer from 'multer'
 import {engine} from 'express-handlebars'
 import { appendFile } from "fs"
+// import {socket} from 'socket.io'
+import { Server } from 'socket.io'
+
 // import {create} from 'express-handlebars' server mas complejos
 
 const upload = multer({storage: storage})
 const app = express()
 const PORT = 4000
+
+//creando server con socket io
+const server = app.listen(PORT, ()=>{
+    console.log(`server on port ${PORT}`)
+    //necesito guardar mi servidor con socket io
+})
+
+const io = new Server(server)
+
 
 //middlewares
 
@@ -21,11 +33,26 @@ app.engine("handlebars", engine()) //config de hbs
 app.set("view engine", "handlebars") // defino mis vistas
 app.set("views", path.resolve(__dirname, "./views")) //`${__dirname}/views`
 
+//dentro de middleware conexion de server
+io.on("connection", (socket) =>{
+    console.log('conexion con socket')
+
+    socket.on('mensaje', info =>{ //captura info de cliente
+        console.log(info)
+    })
+    
+    socket.broadcast.emit('evento-admin', 'hola desde server, sos el admin')
+    //broadcast escucha en todo en la aplicacion menos en el socket actual
+    //se podra escuchar en la app menos en el socket actual
+    socket.emit('evento-general', 'Bienvenido User')
+    
+})
+
 //routes
-app.use('/static', express.static(__dirname + '/public'))
+app.use('/', express.static(__dirname + '/public'))
 app.use('/api/product', routerProd)
 
-app.get('/static', (req,res) => {
+app.get('/', (req,res) => {
 
     const user = {
         nombre: "seba",
@@ -55,4 +82,5 @@ app.post('/upload', upload.single('product'), (req,res) => {
 
 app.listen(PORT, ()=>{
     console.log(`server on port ${PORT}`)
+    //necesito guardar mi servidor con socket io
 })
