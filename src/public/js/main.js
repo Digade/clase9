@@ -1,6 +1,6 @@
 const socket = io()
 
-socket.emit('mensaje', 'Hola, este es el mensaje de conexion socket.io que sale de la app')
+socket.emit('mensaje', 'Hola, me estoy conectando')
 
 socket.on('evento-admin', datos =>{
     console.log(datos)
