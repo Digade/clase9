@@ -1,15 +1,14 @@
 const socket = io()
 
 const chatBox = document.getElementById("chatBox")
-const messagge = []
-console.log("first")
+const messageLogs = document.getElementById("messageLogs")
 let user
 
-swal.fire({
+Swal.fire({
     title: "Inicia sesion",
     input: "text",
-    text: "Por favor inicie sesión para continuar",
-    inputValidator: (valor) =>{
+    text: "Por favor inicie sesion para continuar",
+    inputValidator: (valor) => {
         return !valor && 'Ingrese un valor valido'
     },
     allowOutsideClick: false
@@ -18,30 +17,19 @@ swal.fire({
     console.log(user)
 })
 
-chatBox.addEventListener('keyup', (e) =>{
-    if(e.key =="Enter"){
-        if(chatBox.value.trim().length > 0){
-            socket.emit("mensaje", {usuario:user, info: chatBox.value})
+chatBox.addEventListener('keyup', (e) => {
+    if(e.key ==="Enter") {
+        if(chatBox.value.trim().length > 0) {
+            socket.emit("mensaje", {usuario: user, info: chatBox.value})
             chatBox.value = ""
         }
     }
 })
 
-socket.on("mensajesLogs", info => {
+socket.on("mensajeLogs", info => {
     messageLogs.innerHTML = ""
     console.log(info)
-    info.array.forEach(mensaje => {
-        messageLogs.innerHTML += `<p>${mensaje.usuario} - ${mensaje.info}</p>`
-        
+    info.forEach(mensaje => {
+        messageLogs.innerHTML += `<p>${mensaje.usuario} dice: ${mensaje.info} <p> `
     });
 })
-
-/* socket.emit('mensaje', 'Hola, me estoy conectando')
-
-socket.on('evento-admin', datos =>{
-    console.log(datos)
-})
-
-socket.on('evento-general', datos =>{
-    console.log(datos)
-}) */

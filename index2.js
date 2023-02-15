@@ -2,7 +2,7 @@
 //instalo express-handlebars con npm i express-handlebars
 
 import express from "express"
-import routerProd from './src/public/routes/product.js'
+import routerProd from './src/routes/product.js'
 import __dirname from './path.js'
 import multer from 'multer'
 import {engine} from 'express-handlebars'
