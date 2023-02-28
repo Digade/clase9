@@ -1,6 +1,6 @@
 import express from "express";
 import routerProd from './routes/product.js'
-import {__dirname} from './path.cjs'
+import {__dirname} from './path.js'
 import multer from 'multer'
 import {engine} from 'express-handlebars'
 import * as path from 'path'
